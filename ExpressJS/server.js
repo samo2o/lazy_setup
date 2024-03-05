@@ -52,7 +52,7 @@ app.use((error, req, res, next) => {
 });
 
 mongoose.connect(
-    `mongodb://${process.env.USERNAME}:${process.env.PASSWORD}@${process.env.DB_ADDRESS}:${process.env.DB_PORT}/${process.env.DB_NAME}?directConnection=true`
+    `mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_ADDRESS}:${process.env.DB_PORT}/${process.env.DB_NAME}?directConnection=true`
 ).then(() => {
     app.listen(process.env.SV_PORT);
     log('Server initiated successfully...', 'success');
