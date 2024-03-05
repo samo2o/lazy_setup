@@ -29,7 +29,7 @@ app.use((req, res, next) => {
 //ROUTES
 
 //UN-SUPPORTED ROUTES
-app((req, res, next) => {
+app.use((req, res, next) => {
     return next(
         new HttpError(
             'This route is not supported.',
@@ -39,7 +39,7 @@ app((req, res, next) => {
 });
 
 //ERRORS MIDDLEWARE
-app((error, req, res, next) => {
+app.use((error, req, res, next) => {
     if (req.headerSent) {
         return next(error);
     }
@@ -60,4 +60,4 @@ mongoose.connect(
 }).catch((error) => {
     log('Server failed to initiate.', 'error');
     log(error, 'error');
-})
+});
