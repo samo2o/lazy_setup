@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 
 require('dotenv').config();
 const HttpError = require('./modal/http-error');
-const log = require('./modal/console-log');
+const { log } = require('./modal/console-log');
 
 const app = express();
 
