@@ -22,4 +22,4 @@ const log = (message, type = 'log') => {
     console.log(`${logPrefix} ${message}${resetColor}`);
 };
 
-exports.log = log;
+module.exports = log;

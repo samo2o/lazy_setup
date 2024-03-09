@@ -1,9 +1,10 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 
-require('dotenv').config();
-const HttpError = require('./modal/http-error');
-const { log } = require('./modal/console-log');
+const HttpError = require('./models/http-error');
+const log = require('./models/console-log');
+const userRouter = require('./routes/user-routes');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use((req, res, next) => {
 });
 
 //ROUTES
+app.use('/api/v1/user', userRouter);
 
 //UN-SUPPORTED ROUTES
 app.use((req, res, next) => {
