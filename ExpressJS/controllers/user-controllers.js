@@ -145,6 +145,10 @@ const signup = async (req, res, next) => {
         return next(
             error || 'Something went wrong while saving userdata.'
         );
+    } finally {
+        if (sess) {
+            await sess.endSession();
+        }
     }
 
     let token;
