@@ -1,6 +1,7 @@
 require('dotenv').config();
 const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
 
 const HttpError = require("../models/http-error");
@@ -10,7 +11,7 @@ const login = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(
-            HttpError(
+            new HttpError(
                 'Invalid inputs. Please check your inputs and try again.',
                 422
             )
@@ -30,7 +31,7 @@ const login = async (req, res, next) => {
 
     if (!usernameExists) {
         return next(
-            HttpError(
+            new HttpError(
                 'No username was found.',
                 404
             )
@@ -48,7 +49,7 @@ const login = async (req, res, next) => {
 
     if (!passwordValid) {
         return next(
-            HttpError(
+            new HttpError(
                 'Incorrect password.',
                 401
             )
@@ -73,7 +74,7 @@ const signup = async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(
-            HttpError(
+            new HttpError(
                 'Invalid inputs. Please check your inputs and try again.',
                 422
             )
@@ -85,8 +86,8 @@ const signup = async (req, res, next) => {
     let emailExists;
     let usernameExists;
     try {
-        emailExists = await User.find({ email: email });
-        usernameExists = await User.find({ username: username });
+        emailExists = await User.findOne({ email: email });
+        usernameExists = await User.findOne({ username: username });
     } catch (error) {
         return next(
             error || 'Something went wrong while checking for email and username.'
@@ -95,7 +96,7 @@ const signup = async (req, res, next) => {
 
     if (emailExists) {
         return next(
-            HttpError(
+            new HttpError(
                 'This email is already exists.',
                 409
             )
@@ -103,7 +104,7 @@ const signup = async (req, res, next) => {
     }
     if (usernameExists) {
         return next(
-            new HttpError(
+            new new HttpError(
                 'The provided username was taken. Please re-enter a unique username and try again.',
                 409
             )
@@ -121,7 +122,7 @@ const signup = async (req, res, next) => {
 
     if (!hashPassword) {
         return next(
-            new HttpError(
+            new new HttpError(
                 'Something went wrong while saving the user password. Please try again later.',
                 500
             )
@@ -157,7 +158,7 @@ const signup = async (req, res, next) => {
 
     if (!token) {
         return next(
-            HttpError(
+            new HttpError(
                 'Something went wrong while getting the user token. Please try again later.',
                 500
             )
