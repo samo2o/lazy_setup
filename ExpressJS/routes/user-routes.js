@@ -3,6 +3,8 @@ const { check } = require('express-validator');
 
 const router = express.Router();
 
+const { login, signup } = require('../controllers/user-controllers');
+
 router.post(
     '/login',
     [
