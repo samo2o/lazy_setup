@@ -22,14 +22,14 @@ const login = async (req, res, next) => {
 
     let userExists;
     try {
-        userExists = await User.find({ username: username });
+        userExists = await User.findOne({ username: username });
     } catch (error) {
         return next(
             error || 'Something went wrong while checking for username.'
         )
     }
 
-    if (!usernameExists) {
+    if (!userExists) {
         return next(
             new HttpError(
                 'No username was found.',
