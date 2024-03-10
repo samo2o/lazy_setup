@@ -1,6 +1,7 @@
 require('dotenv').config();
 const jwt = require("jsonwebtoken");
 const mongoose = require('mongoose');
+const { validationResult } = require('express-validator');
 
 const HttpError = require("../models/http-error");
 const User = require("../models/user-schema");
