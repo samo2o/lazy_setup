@@ -10,7 +10,7 @@ const checkAuth = (req, res, next) => {
 
     if (!req.headers.authorization) {
         return next(
-            HttpError(
+            new HttpError(
                 'No authorization token was found.',
                 401
             )
@@ -21,7 +21,7 @@ const checkAuth = (req, res, next) => {
         const TOKEN = req.headers.authorization.split(' ')[1];
         if (!TOKEN) {
             return next(
-                HttpError(
+                new HttpError(
                     'No authorization token was found.',
                     401
                 )
