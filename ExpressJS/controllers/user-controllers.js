@@ -113,7 +113,7 @@ const signup = async (req, res, next) => {
 
     let hashPassword;
     try {
-        hashPassword = bcrypt.hash(password, 12);
+        hashPassword = await bcrypt.hash(password, 12);
     } catch (error) {
         return next(
             error || 'Something went wrong while saving the user password. Please try again later.'
