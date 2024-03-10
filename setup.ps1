@@ -30,11 +30,89 @@ function ExpressJS-Setup {
 }
 
 function Frontend-Setup {
-    Write-Host "Expo React Native project setup option is not ready yet!" -ForegroundColor Red
+    param (
+        [string]$projectName,
+        [string]$projectType
+    )
+
+    # ReactJS
+    if ( $projectType -eq '1' ) {
+        npm create vite@latest $projectName --template react-ts
+        cd $projectName
+
+        npm install
+        npm install --save-dev eslint-config-prettier eslint-plugin-prettier
+
+        # TODO:
+        # - make an insert function to make the proccess easier to copy
+
+        $sourcePath = "$env:APPDATA\DevScripts\default"
+        Copy-Item -Path $sourcePath\* -Destination $PWD -Recurse -Force
+
+        $eslintrcPath = Join-Path $PWD ".eslintrc.cjs"
+        $eslintrcJsonContent = Get-Content -Path $eslintrcPath -Raw
+
+        $lineIndex = $eslintrcJsonContent.IndexOf("'eslint:recommended',")
+        $toAdd = "    'plugin:prettier/recommended',"
+        $newContent = $eslintrcJsonContent.Insert($lineIndex + 22, "$toAdd`n")
+
+        $lineIndex2 = $newContent.IndexOf("plugins")
+        $toAdd2 = ", 'prettier'"
+        $newContent2 = $newContent.Insert($lineIndex2 + 25, "$toAdd2")
+
+        $lineIndex3 = $newContent2.IndexOf("rules")
+        $toAdd3 = "'prettier/prettier': 'warn',"
+        $newContent3 = $newContent2.Insert($lineIndex3 + 13, "$toAdd3`n    ")
+
+        Set-Content -Path $eslintrcPath -Value $newContent3
+
+        npx prettier --write .
+
+        Write-Host "ReactJS project setup complete." -ForegroundColor Green
+        code .
+    }
+    
+    # nextJS
+    if ( $projectType -eq '2' ) {
+        npx create-next-app@latest $projectName
+        cd $projectName
+
+        npm install --save-dev eslint-config-prettier eslint-plugin-prettier
+
+        # TODO:
+        # - no prettier warns work with next JS!?
+        # - make an insert function to make the proccess easier to copy
+
+        $sourcePath = "$env:APPDATA\DevScripts\default"
+        Copy-Item -Path $sourcePath\* -Destination $PWD -Recurse -Force
+
+        # $eslintrcPath = Join-Path $PWD ".eslintrc.json"
+        # $newContent = '{ "extends": [
+        #     "next/core-web-vitals",
+        #     "eslint:recommended",
+        #     "plugin:@typescript-eslint/recommended",
+        #     "prettier"
+        #     ],
+        #     "plugins": ["prettier", "@typescript-eslint"],
+        #     "parser": "@typescript-eslint/parser",
+        #     "rules": {
+        #         "prettier/prettier": "warn"
+        #     },
+        #     "root": true
+        # }'
+
+        # Set-Content -Path $eslintrcPath -Value $newContent
+
+        npx prettier --write .
+
+        Write-Host "NextJS project setup complete." -ForegroundColor Green
+        code .
+    }
 }
 
 function Expo-Setup {
     Write-Host "Expo React Native project setup option is not ready yet!" -ForegroundColor Red
+    Read-Host "Click enter to close..."
 }
 
 function Empty-Setup {

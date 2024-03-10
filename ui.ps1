@@ -41,10 +41,10 @@ function Project-TypeOptions {
     Write-Host "$projectName
     " -ForegroundColor Green
 
-    Write-Host "1. Backend  - ExpressJS starter project"
-    Write-Host "2. Frontend - ReactJS starter project"
-    Write-Host "3. Expo app - React Native starter project"
-    Write-Host "4. Empty"
+    Write-Host "[ 1 ] Backend  - ExpressJS"
+    Write-Host "[ 2 ] Frontend - ReactJS / NextJS"
+    Write-Host "[ 3 ] Expo app - React Native"
+    Write-Host "[ 4 ] Empty"
     Write-Host ""
 
     $choice = Read-Host "Enter your choice"
@@ -53,7 +53,14 @@ function Project-TypeOptions {
             ExpressJS-Setup -projectName $projectName
         }
         '2' {
-            Frontend-Setup -projectName $projectName
+            CLear-Ui
+            Write-Host "[ 1 ] ReactJS"
+            Write-Host "[ 2 ] NextJS"
+            Write-Host ""
+
+            $TypeChoice = Read-Host "Enter your choice"
+
+            Frontend-Setup -projectName $projectName -projectType $TypeChoice
         }
         '3' {
             Expo-Setup -projectName $projectName
