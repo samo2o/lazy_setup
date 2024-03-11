@@ -1,3 +1,5 @@
+. $env:APPDATA\DevScripts\utils.ps1
+
 function ExpressJS-Setup {
     param (
         [string]$projectName
@@ -41,32 +43,15 @@ function Frontend-Setup {
         cd $projectName
 
         npm install
-        # npm install --save-dev eslint-config-prettier eslint-plugin-prettier
+        npm install --save-dev eslint-config-prettier eslint-plugin-prettier
 
-        # TODO:
-        # - make an insert function to make the proccess easier to copy
+        Copy-DefaultFiles -folderName "default"
 
-        $sourcePath = "$env:APPDATA\DevScripts\default"
-        Copy-Item -Path $sourcePath\* -Destination $PWD -Recurse -Force
+        Insert-Line -fileName ".eslintrc.cjs" -search "'eslint:recommended'," -lineToAdd "'plugin:prettier/recommended',`n" -spaceAfterIndex 26
+        Insert-Line -fileName ".eslintrc.cjs" -search "plugins" -lineToAdd ", 'prettier'" -spaceAfterIndex 25
+        Insert-Line -fileName ".eslintrc.cjs" -search "rules" -lineToAdd "'prettier/prettier': 'warn',`n    " -spaceAfterIndex 13
 
-        # $eslintrcPath = Join-Path $PWD ".eslintrc.cjs"
-        # $eslintrcJsonContent = Get-Content -Path $eslintrcPath -Raw
-
-        # $lineIndex = $eslintrcJsonContent.IndexOf("'eslint:recommended',")
-        # $toAdd = "    'plugin:prettier/recommended',"
-        # $newContent = $eslintrcJsonContent.Insert($lineIndex + 22, "$toAdd`n")
-
-        # $lineIndex2 = $newContent.IndexOf("plugins")
-        # $toAdd2 = ", 'prettier'"
-        # $newContent2 = $newContent.Insert($lineIndex2 + 25, "$toAdd2")
-
-        # $lineIndex3 = $newContent2.IndexOf("rules")
-        # $toAdd3 = "'prettier/prettier': 'warn',"
-        # $newContent3 = $newContent2.Insert($lineIndex3 + 13, "$toAdd3`n    ")
-
-        # Set-Content -Path $eslintrcPath -Value $newContent3
-
-        # npx prettier --write .
+        npx prettier --write .
 
         Write-Host "ReactJS project setup complete." -ForegroundColor Green
         code .
@@ -77,32 +62,29 @@ function Frontend-Setup {
         npx create-next-app@latest $projectName
         cd $projectName
 
-        # npm install --save-dev eslint-config-prettier eslint-plugin-prettier
+        npm install --save-dev eslint-config-prettier eslint-plugin-prettier
 
-        # TODO:
-        # - make an insert function to make the proccess easier to copy
+        Copy-DefaultFiles -folderName "default"
 
-        $sourcePath = "$env:APPDATA\DevScripts\default"
-        Copy-Item -Path $sourcePath\* -Destination $PWD -Recurse -Force
+        $eslintrcPath = Join-Path $PWD ".eslintrc.json"
 
-        # $eslintrcPath = Join-Path $PWD ".eslintrc.json"
-        # $newContent = '{ "extends": [
-        #     "next/core-web-vitals",
-        #     "eslint:recommended",
-        #     "plugin:@typescript-eslint/recommended",
-        #     "prettier"
-        #     ],
-        #     "plugins": ["prettier", "@typescript-eslint"],
-        #     "parser": "@typescript-eslint/parser",
-        #     "rules": {
-        #         "prettier/prettier": "warn"
-        #     },
-        #     "root": true
-        # }'
+        $newContent = '{ "extends": [
+            "next/core-web-vitals",
+            "eslint:recommended",
+            "plugin:@typescript-eslint/recommended",
+            "prettier"
+            ],
+            "plugins": ["prettier", "@typescript-eslint"],
+            "parser": "@typescript-eslint/parser",
+            "rules": {
+                "prettier/prettier": "warn"
+            },
+            "root": true
+        }'
 
-        # Set-Content -Path $eslintrcPath -Value $newContent
+        Set-Content -Path $eslintrcPath -Value $newContent
 
-        # npx prettier --write .
+        npx prettier --write .
 
         Write-Host "NextJS project setup complete." -ForegroundColor Green
         code .
